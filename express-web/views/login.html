@@ -1,0 +1,79 @@
+{{extend './layout/layout.html'}}
+
+{{block 'head'}}
+{{/block}}
+
+{{block 'content'}}
+<div class="auth-page" id="login">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center"> {{isLogin ? "Sign in" : "Sign up"}}</h1>
+        <p class="text-xs-center">
+          <a href="">Have an account?</a>
+        </p>
+
+        <ul class="error-messages" v-if='errors.length'>
+          <li v-for='error in errors' :key='error.msg'>{% error.msg %}</li>
+        </ul>
+        <br>
+        <h1>异步提交，axios提交</h1>
+        <div>
+          {{ if !isLogin }}
+          <fieldset class="form-group">
+            <input v-model='user.username' class="form-control form-control-lg" type="text" placeholder="Your Name">
+          </fieldset>
+          {{ /if }}
+          <fieldset class="form-group">
+            <input v-model='user.email' class="form-control form-control-lg" type="text" placeholder="Email">
+          </fieldset>
+          <fieldset class="form-group">
+            <input v-model='user.password' class="form-control form-control-lg" type="password" placeholder="Password">
+          </fieldset>
+          <button class="btn btn-lg btn-primary pull-xs-right" type="submit" @click='handleSubmit'>
+            {{isLogin ? 'Sign in ' : 'Sign up'}}
+          </button>
+          <!-- 服务端解析了vue的{{}}，修改vue的解析模板 -->
+          <!-- <h1>111{% foo %}</h1> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{/block}}
+
+{{block 'script'}}
+<script>
+  (() => {
+    const app = new Vue({
+      el: '#login',
+      // 改变vue的解析模板，从原来的{{}}， 改为{% %}, 所有页面都需要进行，所以在全局中进行混入
+      // delimiters: ['{%', '%}'],
+      data() {
+        return {
+          foo: 'bar',
+          user: {
+            username: 'lpf',
+            email: 'lpf@jak1e.jake',
+            password: 'lpf'
+          },
+          errors: []
+        }
+      },
+      methods: {
+        async handleSubmit() {
+          try {
+            const { data } = await axios.post('http://localhost:3000/api/users/login', {
+              user: this.user
+            })
+            window.location.href = '/'
+          } catch (error) {
+            this.errors = error.response.data.errors
+          }
+        }
+      }
+    })
+  })()
+</script>
+{{/block}}

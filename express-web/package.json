@@ -1,0 +1,22 @@
+{
+  "name": "express-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "axios": "^0.21.1",
+    "connect-mongo": "^4.4.1",
+    "express": "^4.17.1",
+    "express-art-template": "^1.0.1",
+    "express-session": "^1.17.2",
+    "ionicons": "^2.0.1",
+    "vue": "^2.6.14"
+  }
+}
